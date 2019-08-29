@@ -108,12 +108,17 @@ public class ser222_01_01_hw02_base
     //
     private static void makeMazeRecursive(char[][]level, int startX, int startY, int endX, int endY)
     {
+    	int xWidth = endX-startX;
+    	int yWidth = endY-startY;
+    	if(xWidth <=3 || yWidth <=3) {
+    		return;
+    	}
     	int randX = randBetween(startX, endX);
     	int randY = randBetween(startY, endY);
-    	int doorBeforeXLine = randBetween(startX,randX-1);
-    	int doorAfterXLine = randBetween(randX+1,endX);
-    	int doorBeforeYLine = randBetween(startY,randY-1);
-    	int doorAfterYLine = randBetween(randY+1,endY);
+    	int doorBeforeXLine = randBetween(startX,randX);
+    	int doorAfterXLine = randBetween(randX,endX);
+    	int doorBeforeYLine = randBetween(startY,randY);
+    	int doorAfterYLine = randBetween(randY,endY);
     	System.out.print("");
     	// Vertical Line
     	for(int y=0;y< LEVEL_HEIGHT;y++) {
@@ -131,7 +136,14 @@ public class ser222_01_01_hw02_base
     			level[randY][x] = ICON_WALL;
     		}
     	}
-    	
+    	//upper left room
+    	makeMazeRecursive(level,startX,startY,randX,randY);
+    	//upper right room
+    	makeMazeRecursive(level,randX,startY,endX,randY);
+    	//lower left room
+    	makeMazeRecursive(level,startX,randY,randX,endY);
+    	//lower right room
+    	makeMazeRecursive(level,startX,startY,randX,randY);
     }
     
     private static int randBetween(int min, int max) {
