@@ -1,14 +1,13 @@
 /**
  * Uses recursion to create a randomly generated maze. 
  * 
- * Completion time: 
+ * Completion time: 5 Hours
  *
  * @author Blake Caldwell, Acuna
  * @version Version 1.0
  */
-import java.util.Random;
 
-public class ser222_01_01_hw02_base
+public class CaldwellMazeGen
 {
     //standard console size in characters.
     private static final int LEVEL_HEIGHT = 25;
@@ -143,7 +142,7 @@ public class ser222_01_01_hw02_base
     	// Vertical Line drawing
     	for(int y=startY;y< endY;y++) {
     		if(y==doorBeforeYLine|| y==doorAfterYLine) {
-    			level[y][randX] = ' ';
+    			level[y][randX] = ICON_BLANK;
     		}else {
     			level[y][randX] = ICON_WALL;
     		}
@@ -151,7 +150,7 @@ public class ser222_01_01_hw02_base
     	// Horizontal Line drawing
     	for(int x=startX;x< endX;x++) {
     		if(x==doorBeforeXLine|| x==doorAfterXLine) {
-    			level[randY][x] = ' ';
+    			level[randY][x] = ICON_BLANK;
     		}else {
     			level[randY][x] = ICON_WALL;
     		}
