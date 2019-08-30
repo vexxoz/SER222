@@ -66,7 +66,7 @@ public class ser222_01_01_hw02_base
     {
         char level[][] = createBlankLevel();
         
-        makeMazeRecursive(level, 2, 2, LEVEL_WIDTH-2, LEVEL_HEIGHT-2); //TODO: may need to change but probably not.
+        makeMazeRecursive(level, 1, 1, LEVEL_WIDTH-1, LEVEL_HEIGHT-1); //TODO: may need to change but probably not.
         
         return level;
     }
@@ -98,38 +98,58 @@ public class ser222_01_01_hw02_base
         for (int y = 0; y < LEVEL_HEIGHT; y++)
             level[y][0] = ICON_WALL;
     
-        //left barrier
+        //right barrier
         for (int y = 0; y < LEVEL_HEIGHT; y++)
             level[y][LEVEL_WIDTH-1] = ICON_WALL;
             
         return level;
     }
 
-    //
+    /**
+     * Recursively creates a maze by dividing into four sections.
+     * @param level The 2D char array to be passed as a parameter
+     * @param startX The starting X coord for the region
+     * @param startY The starting Y coord for the region
+     * @param endX The ending X coord for the region
+     * @param endY The ending Y coord for the region
+     */
     private static void makeMazeRecursive(char[][]level, int startX, int startY, int endX, int endY)
     {
+    	// The buffer adds padding for the walls so they dont double up
+    	int buffer = 1;
+    	
+    	// Gets the width of the X and Y lengths
     	int xWidth = endX-startX;
     	int yWidth = endY-startY;
-    	if(xWidth <=3 || yWidth <=3) {
+    	
+    	// The base case to prevent regions from being too small
+    	if(xWidth <3 || yWidth <3) {
     		return;
     	}
-    	int randX = randBetween(startX, endX);
-    	int randY = randBetween(startY, endY);
+    	
+    	// Get the random vertical line
+    	int randX = randBetween(startX+buffer, endX-buffer);
+    	// Get the random horizontal line
+    	int randY = randBetween(startY+buffer, endY-buffer);
+    	// Get a random door before the x line but on the y(horz.) line
     	int doorBeforeXLine = randBetween(startX,randX);
+    	//Get a random door after the x line but on the y(horz.) line
     	int doorAfterXLine = randBetween(randX,endX);
+    	//Get a random door before the y line but on the x(vert.) line
     	int doorBeforeYLine = randBetween(startY,randY);
+    	//Get a random door before the y line but on the x(vert.) line    	
     	int doorAfterYLine = randBetween(randY,endY);
-    	System.out.print("");
-    	// Vertical Line
-    	for(int y=0;y< LEVEL_HEIGHT;y++) {
+    	
+    	// Vertical Line drawing
+    	for(int y=startY;y< endY;y++) {
     		if(y==doorBeforeYLine|| y==doorAfterYLine) {
     			level[y][randX] = ' ';
     		}else {
     			level[y][randX] = ICON_WALL;
     		}
     	}
-    	// Horizontal Line
-    	for(int x=0;x< LEVEL_WIDTH;x++) {
+    	// Horizontal Line drawing
+    	for(int x=startX;x< endX;x++) {
     		if(x==doorBeforeXLine|| x==doorAfterXLine) {
     			level[randY][x] = ' ';
     		}else {
@@ -137,18 +157,23 @@ public class ser222_01_01_hw02_base
     		}
     	}
     	//upper left room
-    	makeMazeRecursive(level,startX,startY,randX,randY);
+    	makeMazeRecursive(level,startX,startY,randX,randY);   
     	//upper right room
-    	makeMazeRecursive(level,randX,startY,endX,randY);
+    	makeMazeRecursive(level,randX+buffer,startY,endX,randY);
     	//lower left room
-    	makeMazeRecursive(level,startX,randY,randX,endY);
+    	makeMazeRecursive(level,startX,randY+buffer,randX,endY);
     	//lower right room
-    	makeMazeRecursive(level,startX,startY,randX,randY);
+    	makeMazeRecursive(level,randX+buffer,randY+buffer,endX,endY);
     }
     
+    /**
+     * Generates a random number with min being inclusive and max being exclusive
+     * @param min The smallest possible random number
+     * @param max The largest possible random number
+     * @return A random number within the range of min and max
+     */
     private static int randBetween(int min, int max) {
-    	Random rand = new Random();
-    	return (int)rand.nextInt(max + 1 - min) + min;
+    	return (int) ((Math.random()*(max-min))+min);
     }
     
     /**
