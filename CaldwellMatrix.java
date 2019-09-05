@@ -2,8 +2,8 @@
  * An implementation of the Matrix ADT. Provides four basic operations over an
  * immutable type.
  * 
- * @author (your name), Ruben Acuna
- * @version (version)
+ * @author Blake Caldwell, Ruben Acuna
+ * @version 1.0
  */
 public class CaldwellMatrix implements Matrix {
     /**
